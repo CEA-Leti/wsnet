@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<config xmlns="http://www.cea.fr">
+  <node id="0">
+    <pos x="1" y="0" z="0"/>
+    <rxnode id="1" dbm="-5"/>
+    <rxnode id="2" dbm="0"/>
+    <rxnode id="3" dbm="-10"/>
+    <rxnode id="4" dbm="-25"/>
+    <rxnode id="5" dbm="-20"/>
+    <rxnode id="6" dbm="-5"/>
+  </node>
+
+  <node id="1">
+    <pos x="0" y="1" z="0"/>
+    <rxnode id="0" dbm="-5"/>
+    <rxnode id="2" dbm="0"/>
+    <rxnode id="3" dbm="-10"/>
+    <rxnode id="4" dbm="-25"/>
+    <rxnode id="5" dbm="-20"/>
+    <rxnode id="6" dbm="-5"/>
+  </node>
+
+  <node id="2">
+    <pos x="0" y="0" z="1"/>
+    <rxnode id="0" dbm="-5"/>
+    <rxnode id="1" dbm="0"/>
+    <rxnode id="3" dbm="-10"/>
+    <rxnode id="4" dbm="-25"/>
+    <rxnode id="5" dbm="-20"/>
+    <rxnode id="6" dbm="-5"/>
+  </node>
+
+  <node id="3">
+    <pos x="2" y="0" z="0"/>
+    <rxnode id="0" dbm="-5"/>
+    <rxnode id="1" dbm="0"/>
+    <rxnode id="2" dbm="-10"/>
+    <rxnode id="4" dbm="-25"/>
+    <rxnode id="5" dbm="-20"/>
+    <rxnode id="6" dbm="-5"/>
+  </node>
+
+  <node id="4">
+    <pos x="0" y="2" z="0"/>
+    <rxnode id="0" dbm="-5"/>
+    <rxnode id="1" dbm="0"/>
+    <rxnode id="2" dbm="-10"/>
+    <rxnode id="3" dbm="-25"/>
+    <rxnode id="5" dbm="-20"/>
+    <rxnode id="6" dbm="-5"/>
+  </node>
+
+  <node id="5">
+    <pos x="0" y="0" z="2"/>
+    <rxnode id="0" dbm="-5"/>
+    <rxnode id="1" dbm="0"/>
+    <rxnode id="2" dbm="-10"/>
+    <rxnode id="3" dbm="-25"/>
+    <rxnode id="4" dbm="-20"/>
+    <rxnode id="6" dbm="-5"/>
+  </node>
+
+  <node id="6">
+    <pos x="0" y="0" z="0"/>
+    <rxnode id="0" dbm="-5"/>
+    <rxnode id="1" dbm="0"/>
+    <rxnode id="2" dbm="-10"/>
+    <rxnode id="3" dbm="-25"/>
+    <rxnode id="4" dbm="-20"/>
+    <rxnode id="5" dbm="-5"/>
+  </node>
+</config>
+
+

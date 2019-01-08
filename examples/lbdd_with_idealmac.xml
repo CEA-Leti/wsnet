@@ -1,0 +1,311 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<worldsens xmlns="http://www.cea.fr">
+
+
+	<!-- == Classes ===================================================== -->
+
+	<!-- mediums classes -->
+	<pathloss class="pathloss">
+		<c>
+			<param key="library" value="pathloss_freespace" />
+		</c>
+	</pathloss>
+
+	<shadowing class="shadowing">
+		<c>
+			<param key="library" value="shadowing_none" />
+		</c>
+	</shadowing>
+
+	<fading class="fading">
+		<c>
+			<param key="library" value="fading_none" />
+		</c>
+	</fading>
+
+	<interferences class="interferences">
+		<c>
+			<param key="library" value="interferences_none" />
+		</c>
+	</interferences>
+
+	<intermodulation class="intermodulation">
+		<c>
+			<param key="library" value="intermodulation_none" />
+		</c>
+	</intermodulation>
+
+	<noise class="noise">
+		<c>
+			<param key="library" value="noise_white" />
+		</c>
+		<class_parameters>
+			<param key="white-noise-dBm" value="-98.5dBm" />
+		</class_parameters>
+	</noise>
+
+	<modulation class="none">
+		<c>
+			<param key="library" value="modulations_none" />
+		</c>
+	</modulation>
+
+
+	<!-- environments classes -->
+	<map class="map">
+		<c>
+			<param key="library" value="map_dummy_map" />
+		</c>
+	</map>
+
+
+	<!-- node architectures classes -->
+	<application class="sensor">
+		<c>
+			<param key="library" value="application_lbdd" />
+		</c>
+		<class_parameters>
+			<param key="line-width" value="60" />
+			<param key="group-size" value="60" />
+			<param key="replication" value="0" />
+		</class_parameters>
+		<default_parameters>
+			<param key="hello-start" value="0" />
+			<param key="hello-period" value="1s" />
+			<param key="hello-timeout" value="1000s" />
+			<param key="hello-nbr" value="2" />
+		</default_parameters>
+	</application>
+
+	<application class="data_source">
+		<c>
+			<param key="library" value="application_data_d_source" />
+		</c>
+		<default_parameters>
+			<param key="data-start" value="10s" />
+			<param key="data-period" value="2s" />
+			<param key="metadata" value="1" />
+		</default_parameters>
+	</application>
+
+	<application class="data_sink">
+		<c>
+			<param key="library" value="application_data_d_sink" />
+		</c>
+		<default_parameters>
+			<param key="request-start" value="10s" />
+			<param key="request-period" value="3s" />
+			<param key="metadata" value="1" />
+		</default_parameters>
+	</application>
+
+	<transceiver class="radio">
+		<c>
+			<param key="library" value="transceiver_radio_half1d" />
+		</c>
+	</transceiver>
+
+	<mac class="mac">
+		<c>
+			<param key="library" value="mac_idealmac" />
+		</c>
+		<class_parameters>
+			<param key="range" value="40" />
+		</class_parameters>
+	</mac>
+
+	<interface class="omnidirectionnal">
+		<c>
+			<param key="library" value="interface_antenna_omnidirectionnal" />
+		</c>
+	</interface>
+
+	<energy class="energy">
+		<c>
+			<param key="library" value="energy_linear_battery" />
+		</c>
+		<class_parameters>
+			<param key="global_consumption" value="0" />
+		</class_parameters>
+	</energy>
+
+	<mobility class="position">
+		<c>
+			<param key="library" value="mobility_static" />
+		</c>
+		<default_parameters>
+			<param key="x" value="random" />
+			<param key="y" value="random" />
+			<param key="z" value="0" />
+		</default_parameters>
+	</mobility>
+
+	<mobility class="mobile">
+		<c>
+			<param key="library" value="mobility_billiard" />
+		</c>
+		<class_parameters>
+			<param key="max-speed" value="30" />
+		</class_parameters>
+		<default_parameters>
+			<param key="x" value="random" />
+			<param key="y" value="random" />
+			<param key="z" value="0" />
+			<param key="speed" value="20" />
+		</default_parameters>
+	</mobility>
+
+
+	<!-- simulation classes -->
+	<global_map class="global_map">
+		<c>
+			<param key="library" value="global_map_basic" />
+		</c>
+		<class_parameters>
+			<param key="x" value="500" />
+			<param key="y" value="500" />
+			<param key="z" value="0" />
+		</class_parameters>
+	</global_map>
+
+
+	<!-- == Mediums ===================================================== -->
+	<medium name="air" propagation_range="0">
+
+		<pathloss name="pathloss">
+		</pathloss>
+
+		<shadowing name="shadowing">
+		</shadowing>
+
+		<fading name="fading">
+		</fading>
+
+		<interferences name="interferences">
+		</interferences>
+
+		<intermodulation name="intermodulation">
+		</intermodulation>
+
+		<noise name="noise">
+		</noise>
+
+		<modulation name="none">
+		</modulation>
+
+	</medium>
+
+
+	<!-- == Environments ===================================================== -->
+	<environment name="outdoor">
+
+		<map name="map">
+		</map>
+
+	</environment>
+
+
+	<!-- == Node Architectures ===================================================== -->
+	<node_architecture name="sensor" birth="0" default="true">
+		<implementation>
+			<application name="sensor">
+				<down name="mac" />
+			</application>
+			<mac name="mac">
+				<up name="sensor" />
+				<down name="radio" />
+			</mac>
+			<transceiver name="radio">
+				<up name="mac" />
+				<down name="omnidirectionnal" />
+			</transceiver>
+			<interface name="omnidirectionnal">
+				<up name="radio" />
+				<parameters>
+					<param key="medium" value="air" />
+				</parameters>
+			</interface>
+		</implementation>
+		<energy name="energy">
+			<parameters>
+				<param key="battery_capacity_mA" value="500000" />
+				<param key="voltage_V" value="3" />
+			</parameters>
+		</energy>
+		<mobility name="position">
+		</mobility>
+	</node_architecture>
+
+
+	<node_architecture name="source" birth="0" default="false">
+		<implementation>
+			<application name="data_source">
+				<down name="mac" />
+			</application>
+			<mac name="mac">
+				<up name="data_source" />
+				<down name="radio" />
+			</mac>
+			<transceiver name="radio">
+				<up name="mac" />
+				<down name="omnidirectionnal" />
+			</transceiver>
+			<interface name="omnidirectionnal">
+				<up name="radio" />
+				<parameters>
+					<param key="medium" value="air" />
+				</parameters>
+			</interface>
+		</implementation>
+		<mobility name="mobile">
+		</mobility>
+	</node_architecture>
+
+
+	<node_architecture name="sink" birth="0" default="false">
+		<implementation>
+			<application name="data_sink">
+				<down name="mac" />
+			</application>
+			<mac name="mac">
+				<up name="data_sink" />
+				<down name="radio" />
+			</mac>
+			<transceiver name="radio">
+				<up name="mac" />
+				<down name="omnidirectionnal" />
+			</transceiver>
+			<interface name="omnidirectionnal">
+				<up name="radio" />
+				<parameters>
+					<param key="medium" value="air" />
+				</parameters>
+			</interface>
+		</implementation>
+		<energy name="energy">
+			<parameters>
+				<param key="battery_capacity_mA" value="500000" />
+				<param key="voltage_V" value="3" />
+			</parameters>
+		</energy>
+		<mobility name="mobile">
+		</mobility>
+	</node_architecture>
+
+
+	<!-- == Simulation ===================================================== -->
+	<simulation nodes="1400" duration="100s">
+
+		<global_map name="global_map">
+		</global_map>
+
+		<node id="0" architecture="source">
+		</node>
+
+		<node id="1" architecture="sink">
+		</node>
+
+	</simulation>
+
+
+</worldsens>

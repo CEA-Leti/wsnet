@@ -1,0 +1,296 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<worldsens xmlns="http://www.cea.fr">
+
+
+	<!-- == Classes ===================================================== -->
+
+	<!-- mediums classes -->
+	<pathloss class="pathloss">
+		<c>
+			<param key="library" value="pathloss_range" />
+		</c>
+		<class_parameters>
+			<param key="range" value="100" />
+		</class_parameters>
+	</pathloss>
+
+	<shadowing class="shadowing">
+		<c>
+			<param key="library" value="shadowing_none" />
+		</c>
+	</shadowing>
+
+	<fading class="fading">
+		<c>
+			<param key="library" value="fading_none" />
+		</c>
+	</fading>
+
+	<interferences class="interferences">
+		<c>
+			<param key="library" value="interferences_none" />
+		</c>
+	</interferences>
+
+	<intermodulation class="intermodulation">
+		<c>
+			<param key="library" value="intermodulation_none" />
+		</c>
+	</intermodulation>
+
+	<noise class="noise">
+		<c>
+			<param key="library" value="noise_white" />
+		</c>
+		<class_parameters>
+			<param key="white-noise-dBm" value="-98.5dBm" />
+		</class_parameters>
+	</noise>
+
+	<modulation class="bpsk">
+		<c>
+			<param key="library" value="modulations_bpsk" />
+		</c>
+	</modulation>
+
+
+	<!-- environments classes -->
+	<map class="map">
+		<c>
+			<param key="library" value="map_dummy_map" />
+		</c>
+	</map>
+
+	<!-- node architectures classes -->
+	<application class="epidemic-source">
+		<c>
+			<param key="library" value="application_epidemic" />
+		</c>
+		<class_parameters>
+			<param key="p" value="0.3" />
+			<param key="q" value="1" />
+			<param key="type" value="1" />
+			<param key="period" value="2s" />
+		</class_parameters>
+	</application>
+
+	<application class="epidemic-sensor">
+		<c>
+			<param key="library" value="application_epidemic" />
+		</c>
+		<class_parameters>
+			<param key="p" value="0.3" />
+			<param key="q" value="1" />
+			<param key="type" value="0" />
+		</class_parameters>
+	</application>
+
+	<mac class="mac">
+		<c>
+			<param key="library" value="mac_802_15_4_u_csma_ca_868_bpsk" />
+		</c>
+	</mac>
+
+	<transceiver class="radio">
+		<c>
+			<param key="library" value="transceiver_radio_802_15_4_868_bpsk" />
+		</c>
+		<class_parameters>
+			<param key="modulation" value="bpsk" />
+		</class_parameters>
+	</transceiver>
+
+	<energy class="energy">
+		<c>
+			<param key="library" value="energy_linear_battery" />
+		</c>
+		<class_parameters>
+			<param key="global_consumption" value="0" />
+		</class_parameters>
+	</energy>
+
+	<mobility class="mobility">
+		<c>
+			<param key="library" value="mobility_static" />
+		</c>
+	</mobility>
+
+	<interface class="antenna">
+		<c>
+			<param key="library" value="interface_antenna_omnidirectionnal" />
+		</c>
+	</interface>
+
+	<!-- simulation classes -->
+	<global_map class="global_map">
+		<c>
+			<param key="library" value="global_map_basic" />
+		</c>
+		<class_parameters>
+			<param key="x" value="100" />
+			<param key="y" value="100" />
+			<param key="z" value="0" />
+		</class_parameters>
+	</global_map>
+
+	<monitor class="birth_mon">
+		<c>
+			<param key="library" value="monitor_dummy_monitor" />
+		</c>
+	</monitor>
+
+	<!-- == Mediums ===================================================== -->
+	<medium name="air">
+
+		<pathloss name="pathloss">
+		</pathloss>
+
+		<shadowing name="shadowing">
+		</shadowing>
+
+		<fading name="fading">
+		</fading>
+
+		<interferences name="interferences">
+		</interferences>
+
+		<intermodulation name="intermodulation">
+		</intermodulation>
+
+		<noise name="noise">
+		</noise>
+
+		<modulation name="bpsk">
+		</modulation>
+
+	</medium>
+
+
+	<!-- == Environments ===================================================== -->
+	<environment name="outdoor">
+
+		<map name="map">
+		</map>
+
+	</environment>
+
+	<!-- == Node Architectures ===================================================== -->
+
+	<!-- == Sensor == -->
+	<node_architecture name="sensor" birth="0" default="true">
+
+		<implementation>
+
+			<application name="epidemic-sensor">
+				<down name="mac" />
+				<parameters>
+					<param key="type" value="0" />
+				</parameters>
+			</application>
+
+			<mac name="mac">
+				<up name="epidemic-sensor" />
+				<down name="radio" />
+				<parameters>
+					<param key="cca-threshold" value="-90" />
+					<param key="acknowledgement" value="0" />
+					<param key="MAC_max_retries" value="0" />
+				</parameters>
+			</mac>
+
+			<transceiver name="radio">
+				<up name="mac" />
+				<down name="antenna" />
+				<parameters>
+					<param key="modulation" value="bpsk" />
+					<param key="dBm" value="-30" />
+				</parameters>
+			</transceiver>
+
+			<interface name="antenna">
+				<up name="radio" />
+				<parameters>
+					<param key="medium" value="air" />
+				</parameters>
+			</interface>
+
+		</implementation>
+		<energy name="energy">
+			<parameters>
+				<param key="battery_capacity_mA" value="500000" />
+				<param key="voltage_V" value="3" />
+			</parameters>
+		</energy>
+		<mobility name="mobility">
+		</mobility>
+
+	</node_architecture>
+
+	<!-- == Source == -->
+	<node_architecture name="source" birth="0" default="false">
+
+		<implementation>
+
+			<application name="epidemic-source">
+				<down name="mac" />
+				<parameters>
+					<param key="type" value="1" />
+					<param key="period" value="2s" />
+				</parameters>
+			</application>
+
+			<mac name="mac">
+				<up name="epidemic-source" />
+				<down name="radio" />
+				<parameters>
+					<param key="cca-threshold" value="-90" />
+					<param key="acknowledgement" value="0" />
+					<param key="MAC_max_retries" value="0" />
+				</parameters>
+			</mac>
+
+			<transceiver name="radio">
+				<up name="epidemic-source" />
+				<down name="antenna" />
+				<parameters>
+					<param key="modulation" value="bpsk" />
+					<param key="dBm" value="-30" />
+				</parameters>
+			</transceiver>
+
+			<interface name="antenna">
+				<up name="radio" />
+				<parameters>
+					<param key="medium" value="air" />
+				</parameters>
+			</interface>
+
+		</implementation>
+		<energy name="energy">
+			<parameters>
+				<param key="battery_capacity_mA" value="500000" />
+				<param key="voltage_V" value="3" />
+			</parameters>
+		</energy>
+		<mobility name="mobility">
+		</mobility>
+
+	</node_architecture>
+
+
+	<!-- == Simulation ===================================================== -->
+	<simulation nodes="20" duration="100s">
+
+		<global_map name="global_map">
+		</global_map>
+
+		<monitor name="birth_mon">
+		</monitor>
+
+		<node id="0" architecture="source">
+		</node>
+
+	</simulation>
+
+</worldsens>
+

@@ -1,0 +1,73 @@
+# http://www.gnu.org/software/automake
+
+Makefile
+Makefile.in
+
+
+# http://www.gnu.org/software/autoconf
+
+autom4te.cache
+aclocal.m4
+compile
+configure
+depcomp
+install-sh
+missing
+stamp-h1
+config.*
+
+
+
+libtool
+ltmain.sh
+m4/
+missing
+stamp-h?
+.deps/
+.dirstamp
+.libs/
+
+*.l[ao]*
+*.a
+*.o
+*~
+
+# Windows generated
+*.db
+
+# CMake generated
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+build/
+
+# Python generated
+*.pyc
+
+# Eclipse generated
+.autotools
+.cproject
+.pydevproject
+.project
+.metadata
+.settings
+
+# WSNET installed folder and executable
+installed/
+external_models/
+
+# WSNET generated output
+*.trc
+*.out
+*.png
+*.err
+*.log
+
+# SVN files 
+*.svn
+
+language.settings.xml

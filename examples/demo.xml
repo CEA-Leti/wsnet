@@ -1,0 +1,423 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<worldsens xmlns="http://www.cea.fr">
+
+
+	<!-- == Classes ===================================================== -->
+
+	<!-- mediums classes -->
+	<pathloss class="pathloss">
+		<c>
+			<param key="library" value="pathloss_range" />
+		</c>
+		<class_parameters>
+			<param key="range" value="100" />
+		</class_parameters>
+	</pathloss>
+
+	<shadowing class="shadowing">
+		<c>
+			<param key="library" value="shadowing_none" />
+		</c>
+	</shadowing>
+
+	<fading class="fading">
+		<c>
+			<param key="library" value="fading_none" />
+		</c>
+	</fading>
+
+	<interferences class="interferences">
+		<c>
+			<param key="library" value="interferences_none" />
+		</c>
+	</interferences>
+
+	<intermodulation class="intermodulation">
+		<c>
+			<param key="library" value="intermodulation_none" />
+		</c>
+	</intermodulation>
+
+	<noise class="noise">
+		<c>
+			<param key="library" value="noise_white" />
+		</c>
+		<class_parameters>
+			<param key="white-noise-dBm" value="-98.5dBm" />
+		</class_parameters>
+	</noise>
+
+	<modulation class="bpsk">
+		<c>
+			<param key="library" value="modulations_bpsk" />
+		</c>
+	</modulation>
+
+
+	<!-- environments classes -->
+	<map class="map">
+		<c>
+			<param key="library" value="map_dummy_map" />
+		</c>
+	</map>
+
+	<!-- node architectures classes -->
+	<application class="demo">
+		<c>
+			<param key="library" value="application_demo" />
+		</c>
+		<class_parameters>
+			<param key="type" value="0" />
+		</class_parameters>
+	</application>
+	<mac class="mac1">
+		<c>
+			<param key="library" value="mac_802_15_4_u_csma_ca_868_bpsk" />
+		</c>
+	</mac>
+
+	<mac class="mac2">
+		<c>
+			<param key="library" value="mac_802_15_4_u_csma_ca_902_bpsk" />
+		</c>
+	</mac>
+
+	<transceiver class="radio1">
+		<c>
+			<param key="library" value="transceiver_radio_802_15_4_868_bpsk" />
+		</c>
+		<class_parameters>
+			<param key="modulation" value="bpsk" />
+		</class_parameters>
+	</transceiver>
+
+	<transceiver class="radio2">
+		<c>
+			<param key="library" value="transceiver_radio_802_15_4_902_bpsk" />
+		</c>
+		<class_parameters>
+			<param key="modulation" value="bpsk" />
+		</class_parameters>
+	</transceiver>
+
+	<energy class="energy">
+		<c>
+			<param key="library" value="energy_linear_battery" />
+		</c>
+		<class_parameters>
+			<param key="global_consumption" value="0" />
+		</class_parameters>
+	</energy>
+
+	<mobility class="mobility">
+		<c>
+			<param key="library" value="mobility_static" />
+		</c>
+	</mobility>
+
+	<interface class="antenna1">
+		<c>
+			<param key="library" value="interface_antenna_omnidirectionnal" />
+		</c>
+	</interface>
+
+	<interface class="antenna2">
+		<c>
+			<param key="library" value="interface_antenna_omnidirectionnal" />
+		</c>
+	</interface>
+
+	<!-- simulation classes -->
+	<global_map class="global_map">
+		<c>
+			<param key="library" value="global_map_basic" />
+		</c>
+		<class_parameters>
+			<param key="x" value="100" />
+			<param key="y" value="100" />
+			<param key="z" value="0" />
+		</class_parameters>
+	</global_map>
+
+	<monitor class="birth_mon">
+		<c>
+			<param key="library" value="monitor_dummy_monitor" />
+		</c>
+	</monitor>
+
+
+	<!-- == Mediums ===================================================== -->
+	<medium name="air">
+
+		<pathloss name="pathloss">
+		</pathloss>
+
+		<shadowing name="shadowing">
+		</shadowing>
+
+		<fading name="fading">
+		</fading>
+
+		<interferences name="interferences">
+		</interferences>
+
+		<intermodulation name="intermodulation">
+		</intermodulation>
+
+		<noise name="noise">
+		</noise>
+
+		<modulation name="bpsk">
+		</modulation>
+
+	</medium>
+
+
+	<medium name="water">
+
+		<pathloss name="pathloss">
+		</pathloss>
+
+		<shadowing name="shadowing">
+		</shadowing>
+
+		<fading name="fading">
+		</fading>
+
+		<interferences name="interferences">
+		</interferences>
+
+		<intermodulation name="intermodulation">
+		</intermodulation>
+
+		<noise name="noise">
+		</noise>
+
+		<modulation name="bpsk">
+		</modulation>
+
+	</medium>
+
+
+	<!-- == Environments ===================================================== -->
+	<environment name="outdoor">
+
+		<map name="map">
+		</map>
+
+	</environment>
+
+
+	<environment name="indoor">
+
+		<map name="map">
+		</map>
+
+	</environment>
+
+	<!-- == Node Architectures ===================================================== -->
+	<node_architecture name="sensor_air" birth="0"
+		default="true">
+
+		<implementation>
+			<application name="demo">
+				<down name="mac1" />
+				<parameters>
+					<param key="type" value="0" />
+					<param key="log_status" value="1" />
+				</parameters>
+			</application>
+
+			<mac name="mac1">
+				<up name="demo" />
+				<down name="radio1" />
+				<parameters>
+					<param key="cca-threshold" value="-90" />
+					<param key="acknowledgement" value="0" />
+					<param key="MAC_max_retries" value="0" />
+				</parameters>
+
+			</mac>
+			<transceiver name="radio1">
+				<up name="mac1" />
+				<down name="antenna1" />
+				<parameters>
+					<param key="modulation" value="bpsk" />
+					<param key="dBm" value="-30" />
+				</parameters>
+			</transceiver>
+			<interface name="antenna1">
+				<up name="radio1" />
+				<parameters>
+					<param key="medium" value="air" />
+				</parameters>
+			</interface>
+		</implementation>
+		<energy name="energy">
+			<parameters>
+				<param key="battery_capacity_mA" value="500000" />
+				<param key="voltage_V" value="3" />
+			</parameters>
+		</energy>
+		<mobility name="mobility">
+		</mobility>
+
+	</node_architecture>
+
+	<node_architecture name="sensor_water" birth="0"
+		default="false">
+
+		<implementation>
+			<application name="demo">
+				<down name="mac2" />
+				<parameters>
+					<param key="type" value="0" />
+					<param key="log_status" value="1" />
+				</parameters>
+			</application>
+
+			<mac name="mac2">
+				<up name="demo" />
+				<down name="radio2" />
+				<parameters>
+					<param key="cca-threshold" value="-90" />
+					<param key="acknowledgement" value="0" />
+					<param key="MAC_max_retries" value="0" />
+				</parameters>
+
+			</mac>
+			<transceiver name="radio2">
+				<up name="mac2" />
+				<down name="antenna2" />
+				<parameters>
+					<param key="modulation" value="bpsk" />
+					<param key="dBm" value="-30" />
+				</parameters>
+			</transceiver>
+			<interface name="antenna2">
+				<up name="radio2" />
+				<parameters>
+					<param key="medium" value="water" />
+				</parameters>
+			</interface>
+		</implementation>
+		<energy name="energy">
+			<parameters>
+				<param key="battery_capacity_mA" value="500000" />
+				<param key="voltage_V" value="3" />
+			</parameters>
+		</energy>
+		<mobility name="mobility">
+		</mobility>
+
+	</node_architecture>
+
+	<node_architecture name="gateway_air_water" birth="0"
+		default="false">
+
+		<implementation>
+			<application name="demo">
+				<down name="mac1" />
+				<down name="mac2" />
+				<parameters>
+					<param key="type" value="1" />
+					<param key="log_status" value="1" />
+				</parameters>
+			</application>
+
+			<mac name="mac1">
+				<up name="demo" />
+				<down name="radio1" />
+				<parameters>
+					<param key="cca-threshold" value="-90" />
+					<param key="acknowledgement" value="0" />
+					<param key="MAC_max_retries" value="0" />
+				</parameters>
+
+			</mac>
+			<mac name="mac2">
+				<up name="demo" />
+				<down name="radio2" />
+				<parameters>
+					<param key="cca-threshold" value="-90" />
+					<param key="acknowledgement" value="0" />
+					<param key="MAC_max_retries" value="0" />
+				</parameters>
+
+			</mac>
+			<transceiver name="radio1">
+				<up name="mac1" />
+				<down name="antenna1" />
+				<parameters>
+					<param key="modulation" value="bpsk" />
+					<param key="dBm" value="-30" />
+				</parameters>
+			</transceiver>
+			<transceiver name="radio2">
+				<up name="mac2" />
+				<down name="antenna2" />
+				<parameters>
+					<param key="modulation" value="bpsk" />
+					<param key="dBm" value="-30" />
+				</parameters>
+			</transceiver>
+			<interface name="antenna1">
+				<up name="radio1" />
+				<parameters>
+					<param key="medium" value="air" />
+				</parameters>
+			</interface>
+			<interface name="antenna2">
+				<up name="radio2" />
+				<parameters>
+					<param key="medium" value="water" />
+				</parameters>
+			</interface>
+		</implementation>
+
+		<energy name="energy">
+			<parameters>
+				<param key="battery_capacity_mA" value="500000" />
+				<param key="voltage_V" value="3" />
+			</parameters>
+		</energy>
+
+		<mobility name="mobility">
+		</mobility>
+
+	</node_architecture>
+
+
+	<!-- == Simulation ===================================================== -->
+	<simulation nodes="7" duration="10s">
+
+		<global_map name="global_map">
+		</global_map>
+
+		<monitor name="birth_mon">
+		</monitor>
+
+		<node id="0" architecture="sensor_air">
+		</node>
+
+		<node id="1" architecture="sensor_air">
+		</node>
+
+		<node id="2" architecture="sensor_air">
+		</node>
+
+		<node id="3" architecture="gateway_air_water">
+		</node>
+
+		<node id="4" architecture="sensor_water">
+		</node>
+
+		<node id="5" architecture="sensor_water">
+		</node>
+
+		<node id="6" architecture="sensor_water">
+		</node>
+
+	</simulation>
+
+</worldsens>

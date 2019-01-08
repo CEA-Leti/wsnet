@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<worldsens xmlns="http://www.cea.fr">
+
+
+	<!-- == Classes ===================================================== -->
+
+	<!-- mediums classes -->
+	<pathloss class="pathloss">
+		<c>
+			<param key="library" value="pathloss_freespace" />
+		</c>
+	</pathloss>
+
+	<shadowing class="shadowing">
+		<c>
+			<param key="library" value="shadowing_lognormal" />
+		</c>
+	</shadowing>
+
+	<fading class="fading">
+		<c>
+			<param key="library" value="fading_rayleigh" />
+		</c>
+	</fading>
+
+	<interferences class="interferences">
+		<c>
+			<param key="library" value="interferences_none" />
+		</c>
+	</interferences>
+
+	<intermodulation class="intermodulation">
+		<c>
+			<param key="library" value="intermodulation_none" />
+		</c>
+	</intermodulation>
+
+	<noise class="noise">
+		<c>
+			<param key="library" value="noise_white" />
+		</c>
+		<class_parameters>
+			<param key="white-noise-dBm" value="-98.5dBm" />
+		</class_parameters>
+	</noise>
+
+	<modulation class="fsk">
+		<c>
+			<param key="library" value="modulations_bpsk" />
+		</c>
+	</modulation>
+
+
+	<!-- environments classes -->
+	<map class="map">
+		<c>
+			<param key="library" value="map_dummy_map" />
+		</c>
+	</map>
+
+
+	<!-- node architectures classes -->
+	<application class="hello">
+		<c>
+			<param key="library" value="application_hello" />
+		</c>
+	</application>
+
+
+	<mac class="mac">
+		<c>
+			<param key="library" value="mac_dcf_802_11" />
+		</c>
+	</mac>
+
+	<transceiver class="radio">
+		<c>
+			<param key="library" value="transceiver_radio_half1d" />
+		</c>
+	</transceiver>
+
+	<mobility class="mobility">
+		<c>
+			<param key="library" value="mobility_torus_plane" />
+		</c>
+	</mobility>
+
+	<energy class="energy">
+		<c>
+			<param key="library" value="energy_linear_battery" />
+		</c>
+		<class_parameters>
+			<param key="global_consumption" value="0" />
+		</class_parameters>
+	</energy>
+
+	<interface class="antenna">
+		<c>
+			<param key="library" value="interface_antenna_omnidirectionnal" />
+		</c>
+	</interface>
+
+
+	<!-- simulation classes -->
+	<global_map class="global_map">
+		<c>
+			<param key="library" value="global_map_basic" />
+		</c>
+		<class_parameters>
+			<param key="x" value="100" />
+			<param key="y" value="100" />
+			<param key="z" value="0" />
+		</class_parameters>
+	</global_map>
+
+
+	<!-- == Mediums ===================================================== -->
+	<medium name="air">
+
+		<pathloss name="pathloss">
+		</pathloss>
+
+		<shadowing name="shadowing">
+		</shadowing>
+
+		<fading name="fading">
+		</fading>
+
+		<interferences name="interferences">
+		</interferences>
+
+		<intermodulation name="intermodulation">
+		</intermodulation>
+
+		<noise name="noise">
+		</noise>
+
+		<modulation name="fsk">
+		</modulation>
+
+	</medium>
+
+
+	<!-- == Environments ===================================================== -->
+	<environment name="outdoor">
+
+		<map name="map">
+		</map>
+
+	</environment>
+
+
+	<!-- == Node Architectures ===================================================== -->
+	<node_architecture name="sensor" birth="0" default="true">
+
+		<implementation>
+
+			<application name="hello">
+				<down name="mac" />
+				<parameters>
+					<param key="start" value="0" />
+					<param key="period" value="100ms" />
+					<param key="size" value="1000" />
+				</parameters>
+
+			</application>
+
+			<mac name="mac">
+				<up name="hello" />
+				<down name="radio" />
+			</mac>
+			<transceiver name="radio">
+				<up name="mac" />
+				<down name="antenna" />
+				<parameters>
+					<param key="modulation" value="fsk" />
+					<param key="dBm" value="-30" />
+				</parameters>
+			</transceiver>
+			<interface name="antenna">
+				<up name="radio" />
+				<parameters>
+					<param key="medium" value="air" />
+				</parameters>
+			</interface>
+		</implementation>
+
+		<energy name="energy">
+			<parameters>
+				<param key="battery_capacity_mA" value="500000" />
+				<param key="voltage_V" value="3" />
+			</parameters>
+		</energy>
+
+		<mobility name="mobility">
+		</mobility>
+
+	</node_architecture>
+
+
+	<!-- == Simulation ===================================================== -->
+	<simulation nodes="50" duration="5s">
+
+		<global_map name="global_map">
+		</global_map>
+
+	</simulation>
+
+</worldsens>

@@ -1,0 +1,11 @@
+/**
+ *  \file   wsnet_build_info.h
+ *  \brief  The build configurations of WSNET
+ *  \author Luiz Henrique Suraty Filho (CEA-LETI)
+**/
+
+#pragma once
+
+#define WSNET_VERSION_MAJOR 	@WSNET_VERSION_MAJOR@
+#define WSNET_VERSION_MINOR 	@WSNET_VERSION_MINOR@
+#define WSNET_BUILD_OS 			"@WSNET_BUILD_OS@"

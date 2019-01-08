@@ -1,0 +1,317 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<worldsens xmlns="http://www.cea.fr">
+
+
+	<!-- == Classes ===================================================== -->
+
+	<!-- mediums classes -->
+	<pathloss class="pathloss">
+		<c>
+			<param key="library" value="pathloss_range" />
+		</c>
+		<class_parameters>
+			<param key="range" value="30" />
+		</class_parameters>
+	</pathloss>
+
+	<shadowing class="shadowing">
+		<c>
+			<param key="library" value="shadowing_none" />
+		</c>
+	</shadowing>
+
+	<fading class="fading">
+		<c>
+			<param key="library" value="fading_none" />
+		</c>
+	</fading>
+
+	<interferences class="interferences">
+		<c>
+			<param key="library" value="interferences_orthogonal" />
+		</c>
+	</interferences>
+
+	<intermodulation class="intermodulation">
+		<c>
+			<param key="library" value="intermodulation_none" />
+		</c>
+	</intermodulation>
+
+	<noise class="noise">
+		<c>
+			<param key="library" value="noise_white" />
+		</c>
+		<class_parameters>
+			<param key="white-noise-dBm" value="-98.5dBm" />
+		</class_parameters>
+	</noise>
+
+	<modulation class="none">
+		<c>
+			<param key="library" value="modulations_none" />
+		</c>
+	</modulation>
+
+
+	<!-- environments classes -->
+	<map class="map">
+		<c>
+			<param key="library" value="map_dummy_map" />
+		</c>
+	</map>
+
+
+	<!-- node architectures classes -->
+	<application class="ght_sensor">
+		<c>
+			<param key="library" value="application_ght" />
+		</c>
+		<default_parameters>
+			<param key="hello-period" value="6s" />
+			<param key="hello-timeout" value="13s" />
+		</default_parameters>
+	</application>
+
+	<application class="source">
+		<c>
+			<param key="library" value="application_data_d_source" />
+		</c>
+		<default_parameters>
+			<param key="data-start" value="10s" />
+		</default_parameters>
+	</application>
+
+	<application class="sink">
+		<c>
+			<param key="library" value="application_data_d_sink" />
+		</c>
+		<class_parameters>
+			<param key="logfile" value="./sink.log" />
+		</class_parameters>
+		<default_parameters>
+			<param key="request-start" value="10s" />
+		</default_parameters>
+	</application>
+
+	<transceiver class="radio">
+		<c>
+			<param key="library" value="transceiver_radio_half1d_Wifi" />
+		</c>
+		<default_parameters>
+			<param key="sensibility" value="-92" />
+			<param key="T_s" value="727" />
+			<param key="dBm" value="10" />
+			<param key="channel" value="0" />
+			<param key="modulation" value="none" />
+		</default_parameters>
+	</transceiver>
+
+	<mac class="mac">
+		<c>
+			<param key="library" value="mac_dcf_802_11" />
+		</c>
+	</mac>
+
+	<interface class="omnidirectionnal">
+		<c>
+			<param key="library" value="interface_antenna_omnidirectionnal" />
+		</c>
+		<default_parameters>
+			<param key="loss" value="0" />
+			<param key="angle-xy" value="random" />
+			<param key="angle-z" value="random" />
+		</default_parameters>
+	</interface>
+
+	<energy class="energy">
+		<c>
+			<param key="library" value="energy_linear_battery" />
+		</c>
+		<class_parameters>
+			<param key="global_consumption" value="0" />
+		</class_parameters>
+	</energy>
+	<mobility class="billiard">
+		<c>
+			<param key="library" value="mobility_billiard" />
+		</c>
+		<default_parameters>
+			<param key="x" value="random" />
+			<param key="y" value="random" />
+			<param key="z" value="random" />
+			<param key="speed" value="10" />
+			<param key="angle-xy" value="random" />
+			<param key="angle-z" value="random" />
+		</default_parameters>
+	</mobility>
+
+	<mobility class="static">
+		<c>
+			<param key="library" value="mobility_static" />
+		</c>
+		<default_parameters>
+			<param key="x" value="random" />
+			<param key="y" value="random" />
+			<param key="z" value="random" />
+			<param key="speed" value="10" />
+		</default_parameters>
+	</mobility>
+
+
+	<!-- simulation classes -->
+	<global_map class="global_map">
+		<c>
+			<param key="library" value="global_map_basic" />
+		</c>
+		<class_parameters>
+			<param key="x" value="400" />
+			<param key="y" value="400" />
+			<param key="z" value="0" />
+		</class_parameters>
+	</global_map>
+
+	<!-- == Mediums ===================================================== -->
+	<medium name="air" propagation_range="30">
+
+		<pathloss name="pathloss">
+		</pathloss>
+
+		<shadowing name="shadowing">
+		</shadowing>
+
+		<fading name="fading">
+		</fading>
+
+		<interferences name="interferences">
+		</interferences>
+
+		<intermodulation name="intermodulation">
+		</intermodulation>
+
+		<noise name="noise">
+		</noise>
+
+		<modulation name="none">
+		</modulation>
+
+	</medium>
+
+
+	<!-- == Environments ===================================================== -->
+	<environment name="outdoor">
+
+		<map name="map">
+		</map>
+
+	</environment>
+
+
+	<!-- == Node Architectures ===================================================== -->
+	<node_architecture name="sensor" birth="0" default="true">
+		<implementation>
+			<application name="ght_sensor">
+				<down name="mac" />
+			</application>
+			<mac name="mac">
+				<up name="ght_sensor" />
+				<down name="radio" />
+			</mac>
+			<transceiver name="radio">
+				<up name="mac" />
+				<down name="omnidirectionnal" />
+			</transceiver>
+			<interface name="omnidirectionnal">
+				<up name="radio" />
+				<parameters>
+					<param key="medium" value="air" />
+				</parameters>
+			</interface>
+		</implementation>
+		<energy name="energy">
+			<parameters>
+				<param key="battery_capacity_mA" value="500000" />
+				<param key="voltage_V" value="3" />
+			</parameters>
+		</energy>
+		<mobility name="static">
+		</mobility>
+	</node_architecture>
+
+	<node_architecture name="source" birth="0" default="false">
+		<implementation>
+			<application name="source">
+				<down name="mac" />
+			</application>
+			<mac name="mac">
+				<up name="source" />
+				<down name="radio" />
+			</mac>
+			<transceiver name="radio">
+				<up name="mac" />
+				<down name="omnidirectionnal" />
+			</transceiver>
+			<interface name="omnidirectionnal">
+				<up name="radio" />
+				<parameters>
+					<param key="medium" value="air" />
+				</parameters>
+			</interface>
+		</implementation>
+		<energy name="energy">
+			<parameters>
+				<param key="battery_capacity_mA" value="500000" />
+				<param key="voltage_V" value="3" />
+			</parameters>
+		</energy>
+		<mobility name="billiard">
+		</mobility>
+	</node_architecture>
+
+	<node_architecture name="sink" birth="0" default="false">
+		<implementation>
+			<application name="sink">
+				<down name="mac" />
+			</application>
+			<mac name="mac">
+				<up name="sink" />
+				<down name="radio" />
+			</mac>
+			<transceiver name="radio">
+				<up name="mac" />
+				<down name="omnidirectionnal" />
+			</transceiver>
+			<interface name="omnidirectionnal">
+				<up name="radio" />
+				<parameters>
+					<param key="medium" value="air" />
+				</parameters>
+			</interface>
+		</implementation>
+		<energy name="energy">
+			<parameters>
+				<param key="battery_capacity_mA" value="500000" />
+				<param key="voltage_V" value="3" />
+			</parameters>
+		</energy>
+		<mobility name="billiard">
+		</mobility>
+	</node_architecture>
+
+
+	<!-- == Simulation ===================================================== -->
+	<simulation nodes="2000" duration="50s">
+
+		<global_map name="global_map">
+		</global_map>
+
+		<node id="100" architecture="source">
+		</node>
+
+		<node id="50" architecture="sink">
+		</node>
+
+	</simulation>
+
+
+</worldsens>

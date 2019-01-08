@@ -1,0 +1,55 @@
+stages:
+  - Build_CMake
+  - Build_Make
+  - Test_cppcheck
+  - Test_Integration
+
+Build_CMake-sl6:
+  stage: Build_CMake
+  artifacts:
+    paths:
+      - build/
+  tags:
+    - sl6
+  script:
+    - mkdir -p build && cd build/ && cmake ..
+
+Build_Make-sl6:
+  stage: Build_Make
+  artifacts:
+    paths:
+      - build/
+      - installed/
+  dependencies:
+    - Build_CMake-sl6
+  tags:
+    - sl6
+  script:
+    - cd build/ && make install
+    
+Test_cppcheck-sl6:
+  stage: Test_cppcheck
+  artifacts:
+    paths:
+      - build/
+      - installed/
+  dependencies:
+    - Build_Make-sl6
+  tags:
+    - sl6
+  script:
+    - mkdir -p build/log_cppcheck && cd build/ && env CTEST_OUTPUT_ON_FAILURE=1 ctest -R cppcheck
+    
+Test_Integration-sl6:
+  stage: Test_Integration
+  artifacts:
+    paths:
+      - build/
+      - installed/
+  dependencies:
+    - Test_cppcheck-sl6
+  tags:
+    - sl6
+  script:
+    - cd build/ && env CTEST_OUTPUT_ON_FAILURE=1 ctest -R integration -E valgrind
+    

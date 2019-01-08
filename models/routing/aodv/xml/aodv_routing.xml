@@ -1,0 +1,291 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<worldsens xmlns="http://www.cea.fr">
+
+
+	<!-- == Classes ===================================================== -->
+
+	<!-- mediums classes -->
+	<pathloss class="pathloss">
+		<c>
+			<param key="library" value="pathloss_freespace" />
+		</c>
+		<class_parameters>
+			<param key="frequency_MHz" value="868" />
+			<param key="pathloss" value="2.5" />
+		</class_parameters>
+	</pathloss>
+
+	<shadowing class="shadowing">
+		<c>
+			<param key="library" value="shadowing_lognormal" />
+		</c>
+		<class_parameters>
+			<param key="deviation" value="2" />
+		</class_parameters>
+	</shadowing>
+
+	<fading class="fading">
+		<c>
+			<param key="library" value="fading_rayleigh" />
+		</c>
+	</fading>
+
+	<interferences class="interferences">
+		<c>
+			<param key="library" value="interferences_orthogonal" />
+		</c>
+	</interferences>
+
+	<modulation class="bpsk">
+		<c>
+			<param key="library" value="modulations_bpsk" />
+		</c>
+	</modulation>
+
+	<intermodulation class="intermodulation">
+		<c>
+			<param key="library" value="intermodulation_none" />
+		</c>
+	</intermodulation>
+
+	<!-- environments classes -->
+	<map class="map">
+		<ruby>
+		</ruby>
+	</map>
+
+	<!-- node architectures classes -->
+	<application class="demo">
+		<c>
+			<param key="library" value="application_demo" />
+		</c>
+	</application>
+
+
+	<routing class="aodv_routing">
+		<c>
+			<param key="library" value="routing_aodv" />
+		</c>
+	</routing>
+
+	<mac class="mac">
+		<c>
+			<param key="library" value="mac_802_15_4_u_csma_ca_868_bpsk" />
+		</c>
+	</mac>
+
+	<transceiver class="radio">
+		<c>
+			<param key="library"
+				value="transceiver_radio_802_15_4_868_bpsk" />
+		</c>
+		<class_parameters>
+			<param key="modulation" value="bpsk" />
+		</class_parameters>
+	</transceiver>
+
+	<mobility class="mobility">
+		<c>
+			<param key="library" value="mobility_static" />
+		</c>
+	</mobility>
+
+	<interface class="antenna">
+		<c>
+			<param key="library" value="interface_antenna_omnidirectionnal" />
+		</c>
+	</interface>
+
+	<!-- simulation classes -->
+	<global_map class="global_map">
+		<c>
+			<param key="library" value="global_map_basic" />
+		</c>
+		<class_parameters>
+			<param key="x" value="200" />
+			<param key="y" value="200" />
+			<param key="z" value="0" />
+		</class_parameters>
+	</global_map>
+
+	<monitor class="birth_mon">
+		<c>
+			<param key="library" value="monitor_dummy_monitor" />
+		</c>
+	</monitor>
+
+	<!-- == Mediums ===================================================== -->
+	<medium name="air">
+
+		<pathloss name="pathloss">
+		</pathloss>
+
+		<shadowing name="shadowing">
+		</shadowing>
+
+		<fading name="fading">
+		</fading>
+
+		<interferences name="interferences">
+		</interferences>
+
+		<intermodulation name="intermodulation">
+		</intermodulation>
+
+		<modulation name="bpsk">
+		</modulation>
+
+	</medium>
+
+
+	<!-- == Environments ===================================================== -->
+	<environment name="outdoor">
+
+		<map name="map">
+		</map>
+
+	</environment>
+
+	<!-- == Node Architectures ===================================================== -->
+
+	<!-- == Sensor/Source == -->
+	<node_architecture name="sensor" birth="0"
+		default="true">
+
+		<implementation>
+
+			<application name="demo">
+				<down name="aodv_routing" />
+				<parameters>
+					<param key="type" value="0" />
+					<param key="log_status" value="1" />
+				</parameters>
+			</application>
+
+
+			<routing name="aodv_routing">
+				<up name="demo" />
+				<down name="mac" />
+				<parameters>
+					<param key="node_type" value="1" />
+					<!--param key="route_clean_status" value="1"/ -->
+					<param key="mindBm_difference" value="10.0" />
+					<param key="sink_id" value="0" />
+
+					<!-- LOG STATUS SCHEME -->
+
+					<!--| STATS | FWD | RX | TX | -->
+					<!--| 8 4 2 1 | 8 4 2 1 | 8 4 2 1 | 8 4 2 1 | -->
+					<!--| | |RREQ|FINAL| |RREP|RREQ|DATA| |RREP|RREQ|DATA| |RREP|RREQ|DATA| -->
+
+					<!-- Example: print final stats, RREQ and RREP for TX and RX => 0001 
+						0000 0110 0110 -->
+					<!-- Therefore, the correct value should be the following => 1 0 6 6 -->
+
+					<param key="log_status" value="1064" />
+				</parameters>
+			</routing>
+
+
+			<mac name="mac">
+				<up name="aodv_routing" />
+				<down name="radio" />
+			</mac>
+
+			<transceiver name="radio">
+				<up name="mac" />
+				<down name="antenna" />
+				<parameters>
+					<param key="modulation" value="bpsk" />
+					<param key="dBm" value="-30" />
+				</parameters>
+			</transceiver>
+
+			<interface name="antenna">
+				<up name="radio" />
+				<parameters>
+					<param key="medium" value="air" />
+				</parameters>
+			</interface>
+
+		</implementation>
+
+		<mobility name="mobility">
+		</mobility>
+
+	</node_architecture>
+
+	<!-- == Sink == -->
+	<node_architecture name="sink" birth="0"
+		default="false">
+
+		<implementation>
+
+			<application name="demo">
+				<down name="aodv_routing" />
+				<parameters>
+					<param key="type" value="0" />
+					<param key="log_status" value="1" />
+				</parameters>
+			</application>
+
+
+			<routing name="aodv_routing">
+				<up name="demo" />
+				<down name="mac" />
+				<parameters>
+					<param key="node_type" value="0" />
+					<param key="log_status" value="1064" />
+					<!--param key="route_clean_status" value="1"/ -->
+					<param key="route_clean_period" value="60s" />
+					<param key="mindBm_difference" value="10.0" />
+				</parameters>
+			</routing>
+
+
+			<mac name="mac">
+				<up name="aodv_routing" />
+				<down name="radio" />
+			</mac>
+
+			<transceiver name="radio">
+				<up name="mac" />
+				<down name="antenna" />
+				<parameters>
+					<param key="modulation" value="bpsk" />
+					<param key="dBm" value="-30" />
+				</parameters>
+			</transceiver>
+
+			<interface name="antenna">
+				<up name="radio" />
+				<parameters>
+					<param key="medium" value="air" />
+				</parameters>
+			</interface>
+
+		</implementation>
+
+		<mobility name="mobility">
+		</mobility>
+
+	</node_architecture>
+
+	<!-- == Simulation ===================================================== -->
+	<simulation nodes="8" duration="600s">
+
+		<global_map name="global_map">
+		</global_map>
+
+		<monitor name="birth_mon">
+		</monitor>
+
+		<node id="0" architecture="sink">
+		</node>
+
+
+
+	</simulation>
+
+</worldsens>
+

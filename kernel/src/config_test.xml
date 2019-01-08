@@ -1,0 +1,347 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<worldsens xmlns="http://www.cea.fr">
+
+
+<!-- == Classes ===================================================== -->
+
+<monitor class="birth_mon">
+  <c>
+    <param key="library" value="monitor_dummy_monitor"/>
+  </c>
+</monitor>
+
+<monitor class="birth_mon2">
+  <c>
+    <param key="library" value="monitor_dummy_monitor2"/>
+  </c>
+</monitor>
+
+<!-- mediums classes -->
+<pathloss class="pathloss">
+  <python>
+  </python>
+</pathloss>
+
+<shadowing class="shadowing">
+  <python>
+  </python>
+</shadowing>
+
+<fading class="fading">
+  <python>
+  </python>
+</fading>
+
+<interferences class="interfer1">
+  <ruby>
+  </ruby>
+  <class_parameters>
+    <param key="key1" value="2"/>
+    <param key="key2" value="3"/>
+  </class_parameters>
+  <default_parameters>
+    <param key="def_key1" value="3"/>
+    <param key="def_key2" value="4"/>
+  </default_parameters>
+</interferences>
+
+<interferences class="interfer2">
+  <python>
+  </python>
+</interferences>
+
+<noise class="noise">
+  <python>
+  </python>
+</noise>
+
+<modulation class="modulation">
+  <python>
+  </python>
+</modulation>
+
+
+<!-- environments classes -->
+<map class="map1">
+  <ruby>
+  </ruby>
+  <class_parameters>
+    <param key="keymap11" value="2"/>
+    <param key="keymap12" value="3"/>
+  </class_parameters>
+  <default_parameters>
+    <param key="def_keymap11" value="3"/>
+    <param key="def_keymap12" value="4"/>
+  </default_parameters>
+</map>
+
+<map class="map2">
+  <ruby>
+  </ruby>
+  <class_parameters>
+    <param key="keymap21" value="2"/>
+    <param key="keymap22" value="3"/>
+  </class_parameters>
+  <default_parameters>
+    <param key="def_keymap21" value="3"/>
+    <param key="def_keymap22" value="4"/>
+  </default_parameters>
+</map>
+
+<physical class="temperature">
+  <python>
+  </python>
+</physical>
+
+<physical class="luminosite">
+  <python>
+  </python>
+</physical>
+
+
+<!-- node architectures classes -->
+<mac class="mac">
+  <python>
+  </python>
+  <default_parameters>
+    <param key="mackey" value="macval0"/>
+  </default_parameters>
+</mac>
+
+<transceiver class="radio1">
+  <python>
+  </python>
+</transceiver>
+
+<transceiver class="radio2">
+  <ruby>
+  </ruby>
+</transceiver>
+
+<energy class="energy">
+  <python>
+  </python>
+</energy>
+
+<mobility class="mobility">
+  <c>
+    <param key="library" value="mobility_dummy_mobility"/>
+  </c>
+</mobility>
+
+<interface class="interface">
+  <python>
+  </python>
+</interface>
+
+<sensor class="capt_temp">
+  <python>
+  </python>
+</sensor>
+
+<sensor class="capt_lum">
+  <python>
+  </python>
+</sensor>
+
+
+<!-- simulation classes -->
+<global_map class="global_map">
+</global_map>
+
+
+<!-- == Mediums ===================================================== -->
+<medium name="air">
+
+  <pathloss name="pathloss">
+  </pathloss>
+
+  <shadowing name="shadowing">
+  </shadowing>
+
+  <fading name="fading">
+  </fading>
+
+  <interferences name="interfer1">
+  </interferences>
+
+  <noise name="noise">
+  </noise>
+
+  <modulation name="modulation">
+  </modulation>
+
+</medium>
+
+
+<medium name="eau">
+
+  <pathloss name="pathloss">
+    <parameters>
+      <param key="test" value="testval"/>
+    </parameters>
+  </pathloss>
+
+  <shadowing name="shadowing">
+  </shadowing>
+
+  <fading name="fading">
+  </fading>
+
+  <interferences name="interfer2">
+  </interferences>
+
+  <modulation name="modulation">
+  </modulation>
+
+</medium>
+
+
+<!-- == Environments ===================================================== -->
+<environment name="interieur">
+
+  <map name="map1">
+    <parameters>
+      <param key="def_keymap21" value="1111"/>
+    </parameters>
+  </map>
+
+  <physical name="luminosite">
+    <parameters>
+      <param key="sensibilite" value="10"/>
+    </parameters>
+  </physical>
+
+</environment>
+
+<environment name="exterieur">
+
+  <map name="map2">
+  </map>
+
+  <physical name="temperature">
+  </physical>
+
+  <physical name="luminosite">
+    <parameters>
+      <param key="sensibilite" value="15"/>
+    </parameters>
+  </physical>
+
+</environment>
+
+
+<!-- == Node Arcitectures ===================================================== -->
+<node_architecture name="puit" birth="20" default="false">
+
+  <implementation>
+    <mac name="mac">
+      <down name="radio1"/>
+      <down name="radio2"/>
+      <parameters>
+        <param key="mackey" value="macval1"/>
+      </parameters>
+    </mac>
+
+    <transceiver name="radio1">
+      <up name="mac"/>
+    </transceiver>
+
+    <transceiver name="radio2">
+      <up name="mac"/>
+    </transceiver>
+
+    <interface name="interface">
+      <up name="radio1"/>
+      <up name="radio2"/>
+    </interface>
+  </implementation>
+
+  <energy name="energy">
+    <parameters>
+      <param key="energykey" value="energyval"/>
+    </parameters>
+  </energy>
+
+  <mobility name="mobility">
+  </mobility>
+
+</node_architecture>
+
+<node_architecture name="source" default="true">
+
+  <implementation>
+    <mac name="mac">
+      <down name="radio1"/>
+      <down name="radio2"/>
+      <parameters>
+        <param key="mackey" value="macval1"/>
+      </parameters>
+    </mac>
+
+    <transceiver name="radio1">
+      <up name="mac"/>
+    </transceiver>
+
+    <transceiver name="radio2">
+      <up name="mac"/>
+    </transceiver>
+
+    <interface name="interface">
+      <up name="radio1"/>
+      <up name="radio2"/>
+    </interface>
+
+  </implementation>
+
+  <energy name="energy">
+  </energy>
+
+  <mobility name="mobility">
+  </mobility>
+
+  <sensor name="capt_lum">
+    <parameters>
+      <param key="sensibilite" value="13"/>
+      <param key="environment" value="exterieur"/>
+      <param key="physical" value="luminosite"/>
+    </parameters>
+  </sensor>
+
+  <sensor name="capt_temp">
+    <parameters>
+      <param key="environment" value="exterieur"/>
+      <param key="physical" value="temperature"/>
+    </parameters>
+  </sensor>
+
+</node_architecture>
+
+
+<!-- == Simulation ===================================================== -->
+<simulation nodes="10" duration="10s">
+
+  <global_map name="global_map">
+  </global_map>
+
+  <monitor name="birth_mon">
+  </monitor>
+
+  <monitor name="birth_mon2">
+  </monitor>
+
+  <node id="0" architecture="puit" birth="50">
+    <parameters class="energy">
+      <param key="energykey1" value="energyval2"/>
+    </parameters>
+  </node>
+
+  <node id="1" architecture="source" birth="10">
+    <parameters class="mac">
+      <param key="mackey" value="macval2"/>
+    </parameters>
+  </node>
+
+</simulation>
+
+</worldsens>
